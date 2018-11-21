@@ -23,14 +23,13 @@ function ordinal_suffix_of(i) {
   return i + "th";
 }
 
-const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const weekdays = ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."];
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const publish = () => {
   let bookmarks = fs.readFileSync('bookmarks.csv', 'utf8');
   let parsedData = parse(bookmarks);
   parsedData = parsedData.sort(sortByDate)
-  //console.log(parsedData);
 
   parsedData.forEach(line => {
     let date = new Date(parseInt(line[0]));

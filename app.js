@@ -23,23 +23,16 @@ app.post('/add', (req, res) => {
   const url = req.body.url;
   const time = new Date().getTime();
 
-  
-  
   try {
     let line = stringify([[time,url,title]]);
-
     fs.appendFileSync('bookmarks.csv', line, 'utf8');
-
-    console.log(line);
     publish.publish();
-
     res.sendStatus(200);
   } catch (err) {
     console.log(err);
     res.sendStatus(200);
   }
 });
-
 
 app.listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}`);
