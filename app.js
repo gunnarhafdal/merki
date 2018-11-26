@@ -9,9 +9,15 @@ const publish = require('./publish');
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-app.get('/', (req, res) => res.sendFile('index.html'));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
-app.post('/add', (req, res) => {
+app.get('/', (req, res, next) => res.sendFile('index.html'));
+
+app.post('/add', (req, res, next) => {
   const lykill = req.body.lykill;
   
   if(lykill !== process.env.LYKILL) {
