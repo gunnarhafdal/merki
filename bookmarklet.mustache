@@ -1,0 +1,16 @@
+javascript:(async () => {
+  const title = document.title;
+  const url = location.href;
+
+  const rawResponse = await fetch('{{{domain}}}/add', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({title: title, url: url, secret: '{{{secret}}}'})
+  });
+  const content = await rawResponse.json();
+
+  console.log(content);
+})();
