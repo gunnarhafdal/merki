@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 const parse = require('csv-parse/lib/sync');
 const mustache = require('mustache');
@@ -27,6 +28,12 @@ const weekdays = ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."];
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const publish = () => {
+
+  if(!fs.existsSync('bookmarks.csv')){
+    console.log("'bookmarks.csv' does not exists. Not publishing.");
+    return
+  }
+
   let bookmarks = fs.readFileSync('bookmarks.csv', 'utf8');
   let parsedData = parse(bookmarks);
   parsedData = parsedData.sort(sortByDate)
@@ -57,7 +64,7 @@ const publish = () => {
   });
 
   let template = fs.readFileSync('template.mustache', 'utf8');
-  let html = mustache.to_html(template, {context: parsedData });
+  let html = mustache.to_html(template, {context: parsedData, title: process.env.TITLE, description: process.env.DESCRIPTION });
   fs.writeFileSync('public/index.html', html, 'utf8');
 }
 
