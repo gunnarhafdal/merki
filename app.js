@@ -6,6 +6,11 @@ const fs = require('fs');
 const stringify = require('csv-stringify/lib/sync');
 const publish = require('./publish');
 
+if(process.env.SECRET === undefined || process.env.SECRET === "") {
+  console.log("SECRET missing from .env file. Quitting.");
+  return
+}
+
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
@@ -18,9 +23,9 @@ app.use(function(req, res, next) {
 app.get('/', (req, res, next) => res.sendFile('index.html'));
 
 app.post('/add', (req, res, next) => {
-  const lykill = req.body.lykill;
+  const secret = req.body.secret;
   
-  if(lykill !== process.env.LYKILL) {
+  if(secret !== process.env.SECRET) {
     res.sendStatus(403);
     return
   }
