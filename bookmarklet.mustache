@@ -1,7 +1,6 @@
 javascript:(async () => {
   const title = document.title;
   const url = location.href;
-
   const rawResponse = await fetch('{{{domain}}}/add', {
     method: 'POST',
     headers: {
@@ -10,7 +9,11 @@ javascript:(async () => {
     },
     body: JSON.stringify({title: title, url: url, secret: '{{{secret}}}'})
   });
-  const content = await rawResponse.json();
-
-  console.log(content);
+  const content = await rawResponse.text();
+  console.log(`Reply from {{{domain}}}/add: ${content}`);
+  if(content === "OK") {
+    alert("Site saved successfully.");
+  } else {
+    alert(`Something went wrong: ${content}`);
+  }
 })();
